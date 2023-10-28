@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teacher Information</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+      th,
+      td {
+        padding: 10px;
+        text-align: center;
+      }
+      th {
+        background-color: #333;
+        color: #fff;
+      }
+      td input {
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #ddd;
+      }
+      td input[readonly] {
+        background-color: #f4f4f4;
+      }
+      td button {
+        width: 100%;
+        padding: 5px;
+        background-color: #333;
+        color: #fff;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Teacher Information</h1>
+    </header>
+    <div id="teacher-entry">
+      <h2>Add Teacher</h2>
+      <form
+        id="teacher-entry-form"
+        method="POST"
+        action="/teachers"
+        enctype="application/x-www-form-urlencoded"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th>Teacher Name</th>
+              <th>Subject</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="teacher-entry-table">
+            <tr>
+              <td>
+                <input type="text" name="name" placeholder="Teacher Name" />
+              </td>
+              <td>
+                <input type="text" name="subject" placeholder="Subject" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="submit">Save</button>
+      </form>
+    </div>
+    <div id="teacher-display">
+      <h2>Teacher Information</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Teacher Name</th>
+            <th>Subject</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <!-- <tbody id="teacher-display-table">
+        </tbody> -->
+        <tbody id="teacher-display-table">
+          <% teachers.forEach((teacher, index) => { %>
+          <tr>
+            <td><%= teacher.name %></td>
+            <td><%= teacher.subject %></td>
+            <td>
+              <!-- <button onclick="deleteTeacher(<%= index %>)">Delete</button> -->
+
+              <!-- <form
+                method="POST"
+                action="/teachers/<%= teacher.id %>?_method=DELETE"
+              >
+                <button type="submit">Delete</button>
+              </form> -->
+
+              <form
+                method="POST"
+                action="/teachers/<%= teacher.id %>?_method=DELETE"
+              >
+                <input type="hidden" name="_method" value="DELETE" />
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      // Function to fetch and display teachers
+      //   function fetchAndDisplayTeachers() {
+      //     fetch("/teachers")
+      //       .then((response) => response.json())
+      //       .then((teachers) => {
+      //         const teacherDisplayTable = document.getElementById(
+      //           "teacher-display-table"
+      //         );
+      //         teacherDisplayTable.innerHTML = ""; // Clear existing data
+
+      //         teachers.forEach((teacher) => {
+      //           const newRow = document.createElement("tr");
+      //           newRow.innerHTML = `
+      //               <td>${teacher.name}</td>
+      //               <td>${teacher.subject}</td>
+      //               <td><button onclick="deleteTeacher(this)">Delete</button></td>
+      //             `;
+      //           teacherDisplayTable.appendChild(newRow);
+      //         });
+      //       })
+      //       .catch((error) => {
+      //         console.error("An error occurred: " + error);
+      //       });
+      //   }
+
+      // Call the function to initially display saved teachers
+      //fetchAndDisplayTeachers();
+
+      //   function createTeacher() {
+      //     const form = document.getElementById("teacher-entry-form");
+      //     const formData = new FormData(form);
+
+      //     fetch("/teachers", {
+      //       method: "POST",
+      //       body: formData,
+      //     })
+      //       .then((response) => response.json())
+      //       .then((data) => {
+      //         if (data.error) {
+      //           alert("Error: " + data.error);
+      //         } else {
+      //           // If the teacher is successfully saved, you can update the UI or take any other actions.
+      //           alert("Teacher saved successfully!");
+
+      //           // After saving a teacher, refresh the teacher list
+      //           fetchAndDisplayTeachers();
+      //         }
+      //       })
+      //       .catch((error) => {
+      //         alert("An error occurred: " + error);
+      //       });
+      //   }
+
+      //   function deleteTeacher(button) {
+      //     const row = button.parentNode.parentNode;
+      //     row.parentNode.removeChild(row);
+      //   }
+
+      //   function deleteTeacher(index) {
+      //     // Get the teacher based on the index
+      //     const teacher = teachers[index];
+
+      //     // Make a DELETE request to your server to delete the teacher
+      //     fetch(`/teachers/${teacher.id}`, {
+      //       method: "DELETE",
+      //     })
+      //       .then((response) => {
+      //         if (response.ok) {
+      //           // Teacher was successfully deleted
+      //           // Remove the row from the table
+      //           const teacherDisplayTable = document.getElementById(
+      //             "teacher-display-table"
+      //           );
+      //           teacherDisplayTable.deleteRow(index + 1); // +1 to account for the table header
+      //         } else {
+      //           // Handle error cases
+      //           alert("Error: Teacher deletion failed.");
+      //         }
+      //       })
+      //       .catch((error) => {
+      //         console.error("An error occurred: " + error);
+      //       });
+      //   }
+    </script>
+  </body>
+</html>

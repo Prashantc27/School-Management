@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Information</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+      th,
+      td {
+        padding: 10px;
+        text-align: center;
+      }
+      th {
+        background-color: #333;
+        color: #fff;
+      }
+      td input {
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #ddd;
+      }
+      td input[readonly] {
+        background-color: #f4f4f4;
+      }
+      td button {
+        width: 100%;
+        padding: 5px;
+        background-color: #333;
+        color: #fff;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Student Information</h1>
+    </header>
+    <div id="marks-entry">
+      <h2>Enter Student Marks</h2>
+      <form
+        id="marks-entry-form"
+        method="POST"
+        action="/marks/upload"
+        enctype="application/x-www-form-urlencoded"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th>Student Roll Number</th>
+              <th>Subject</th>
+              <th>Obtained Marks</th>
+              <th>Total Marks</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="marks-entry-table">
+            <tr>
+              <td>
+                <input
+                  type="number"
+                  name="studentRollNo"
+                  placeholder="Student Roll Number"
+                />
+              </td>
+              <td>
+                <input type="text" name="subjectName" placeholder="Subject" />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  name="obtainedMarks"
+                  placeholder="Obtained Marks"
+                />
+              </td>
+              <td>
+                <input type="text" name="totalMarks" readonly value="100" />
+              </td>
+              <td>
+                <button type="submit">Save</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+
+    <div id="load-marks">
+      <h2>Load Marks</h2>
+      <form
+        id="load-marks-form"
+        method="POST"
+        action="/marks/load"
+        enctype="application/x-www-form-urlencoded"
+      >
+        <label for="rollNumber">Enter Roll Number</label>
+        <input
+          type="number"
+          name="studentRollNo"
+          id="rollNumber"
+          placeholder="Enter roll number"
+        />
+        <button type="submit">Load Student</button>
+      </form>
+    </div>
+
+    <div id="student-display">
+      <h2>Student Information</h2>
+      <div>
+        <p><strong>Roll Number:</strong> <%= studentData.RollNo || 'N/A' %></p>
+        <p><strong>Name:</strong> <%= studentData.Name || 'N/A' %></p>
+        <p>
+          <strong>Obtained Marks:</strong> <%= studentData.obtainedTotalMarks ||
+          'N/A' %>
+        </p>
+        <p>
+          <strong>Total Marks:</strong> <%= studentData.totalTotalMarks || 'N/A'
+          %>
+        </p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Subject Name</th>
+            <th>Scored Marks</th>
+            <th>Total Marks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (studentData && studentData.selectedMarks) { %> <%
+          studentData.selectedMarks.forEach((mark) => { %>
+          <tr>
+            <td><%= mark.subjectName %></td>
+            <td><%= mark.obtainedMarks %></td>
+            <td><%= mark.totalMarks %></td>
+            <td>
+              <form method="POST" action="/marks/<%= mark.id %>?_method=DELETE">
+                <input type="hidden" name="_method" value="DELETE" />
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          <% }); %> <% } else { %>
+          <tr>
+            <td colspan="4">No marks data available</td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
